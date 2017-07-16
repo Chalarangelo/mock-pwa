@@ -1,3 +1,21 @@
+body::before {
+  content : '';
+  display: block;
+  height: 6px;
+  background: #283593;
+  width: 100%;
+  margin-bottom: -6px;
+  position: fixed;
+  top: 0;
+  z-index: 1100;
+}
+header {
+  margin-left: -6px;
+  top: 0;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
 .container {
   min-height: calc(100vh - 15rem);
 }
