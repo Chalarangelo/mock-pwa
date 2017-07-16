@@ -1,0 +1,54 @@
+.container {
+  min-height: calc(100vh - 15rem);
+}
+
+h4.user-name, .user-location {
+  text-transform: capitalize;
+}
+h4.user-name small {
+  text-transform: lowercase;
+}
+svg {
+  vertical-align: middle;
+}
+.user-image {
+  min-width: 2.25rem;
+  margin-top: 0.5rem;
+}
+header .logo {
+  line-height: 1.625;
+  padding-left: 0.75rem;
+}
+.drawer {
+  overflow: visible;
+}
+.drawer label.drawer-toggle.hide{
+  height: 2.125rem;
+  width: 291px;
+  background: #283593;
+  border: 1px solid #283593;
+  color: #fafafa;
+  margin-left: -1px;
+  margin-top: -1px;
+}
+.drawer label.drawer-toggle.hide:hover, .drawer label.drawer-toggle.hide:focus{
+  background: #303f9f;
+}
+.drawer label.drawer-toggle.hide::before {
+  content: '\00a0\00a0\00a0menu';
+  font-size: 0.875rem;
+}
+p.post-text::first-letter{
+  text-transform: uppercase;
+}
+.posted-by {
+  color: #424242;
+  font-size: 0.875rem;
+}
+.posted-by svg {
+  vertical-align: bottom;
+}
+img {
+  background: #757575;
+  color: #757575;
+}
