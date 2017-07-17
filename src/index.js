@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   postsViewButton = document.getElementById('posts-view-button');
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-      .register(process.env.PUBLIC_URL +'service-worker.js')
+      .register('service-worker.js')
       .then(function() { console.log('Registered service worker!'); });
   }
   usersViewButton.addEventListener('click', function(e){
