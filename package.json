@@ -25,7 +25,7 @@
     "build-replace": "npm run build-replace-js && npm run build-replace-css",
     "build-replace-js": "replace main\\.\\w+\\.js main.js build/index.html",
     "build-replace-css": "replace main\\.\\w+\\.css main.css build/index.html",
-    "build-replace-sw-load": "replace .service-worker.js ../../service-worker.js build/static/js/main.js",
+    "build-replace-sw-load": "replace .service-worker.js ./service-worker.js build/static/js/main.js",
     "build-replace-sw-refs": "replace './static/js/bundle.js' './static/js/main.js','./static/css/main.css' build/service-worker.js",
     "build-minify-sw" : "uglifyjs build/service-worker.js --output build/service-worker.js"
   },
