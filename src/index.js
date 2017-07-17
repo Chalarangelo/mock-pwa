@@ -82,11 +82,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
   contentArea = document.getElementById('content-area');
   usersViewButton = document.getElementById('users-view-button');
   postsViewButton = document.getElementById('posts-view-button');
-  // if ('serviceWorker' in navigator) {
-  //   navigator.serviceWorker
-  //     .register(process.env.PUBLIC_URL +'service-worker.js')
-  //     .then(function() { console.log('Registered service worker!'); });
-  // }
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+      .register(process.env.PUBLIC_URL +'service-worker.js')
+      .then(function() { console.log('Registered service worker!'); });
+  }
   usersViewButton.addEventListener('click', function(e){
     if (currentView == USERS_VIEW)
       return;

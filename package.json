@@ -7,12 +7,26 @@
     "react-dom": "^15.6.1",
     "react-scripts": "0.9.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "renamer": "^0.6.1",
+    "replace": "^0.3.0",
+    "uglify-js": "^3.0.25"
+  },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npm run build-rename-replace && npm run build-sw",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build-sw" : "npm run build-replace-sw-refs && npm run build-minify-sw",
+    "build-rename-replace": "npm run build-rename && npm run build-replace",
+    "build-rename": "npm run build-rename-js && npm run build-rename-css",
+    "build-rename-js": "renamer --regex --find main\\.\\w+\\.js --replace main.js build/static/js/*.js",
+    "build-rename-css": "renamer --regex --find main\\.\\w+\\.css --replace main.css build/static/css/*.css",
+    "build-replace": "npm run build-replace-js && npm run build-replace-css",
+    "build-replace-js": "replace main\\.\\w+\\.js main.js build/index.html",
+    "build-replace-css": "replace main\\.\\w+\\.css main.css build/index.html",
+    "build-replace-sw-refs": "replace './static/js/bundle.js' './static/js/main.js','./static/css/main.css' build/service-worker.js",
+    "build-minify-sw" : "uglifyjs build/service-worker.js --output build/service-worker.js"
   },
-  "homepage": "https://chalarangelo.github.io/mock-pwa"
+  "homepage": "."
 }
