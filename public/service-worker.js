@@ -14,6 +14,8 @@ var filesToCache = [
   './icons/apple-icon-152x152.png',
   './icons/apple-icon-180x180.png',
   './icons/android-icon-192x192.png',
+  './icons/favicon-256x256.png',
+  './icons/favicon-512x512.png',
   './icons/favicon-32x32.png',
   './icons/favicon-96x96.png',
   './icons/favicon-16x16.png',
