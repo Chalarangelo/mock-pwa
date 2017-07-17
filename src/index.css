@@ -70,3 +70,15 @@ img {
   background: #757575;
   color: #757575;
 }
+#toast-message {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+#toast-message svg {
+  vertical-align: bottom;
+}
+#connection-status {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+}

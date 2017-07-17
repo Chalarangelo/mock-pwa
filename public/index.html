@@ -10,7 +10,6 @@
     <meta name="msapplication-navbutton-color" content="#1a237e">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="msapplication-starturl" content="./index.html">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://gitcdn.link/repo/Chalarangelo/mini.css/master/dist/mini-pwa.min.css">
     <link rel="shortcut icon" href="%PUBLIC_URL%/icons/favicon.ico">
@@ -46,6 +45,7 @@
     <header class="sticky">
       <label for="drawer-checkbox" class="button drawer-toggle"></label>
       <span href="#" class="logo">Mock App</span>
+      <div id="connection-status"></div>
     </header>
 
     <input type="checkbox" id="drawer-checkbox">
@@ -67,5 +67,7 @@
         </div>
       </div>
     </footer>
+    <div id="message-area"></div>
+    <!-- <span class="toast" id="toast-message"></span> -->
   </body>
 </html>

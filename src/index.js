@@ -24,15 +24,20 @@ function getScrollPercent() {
   Store a reference to #content-area in a variable for quick access.
   Store a reference to #users-view-button in a variable for quick access.
   Store a reference to #posts-view-button in a variable for quick access.
+  Store a reference to #message-area in a variable for quick access.
+  Store a reference to #connection-status in a variable for quick access.
   Store the Random User Generator URI we're using in a variable.
   Store the JSON Placeholder URI we're using in a function that auto-increments.
   Store the Unsplash it URI we're using in a variable.
+  Store a reference to the timeout set for the #message-area to be able to clear it.
 */
 var users = [];
 var posts = [];
 var contentArea = null;
 var usersViewButton = null;
 var postsViewButton = null;
+var messageArea = null;
+var connectionStatus = null
 var usersEndpoint = 'https://randomuser.me/api?seed=%22ph%27nglui%20mglw%27nafh%20Cthulhu%20R%27lyeh%20wgah%27nagl%20fhtagn%22&results=25&nat=US';
 var postsEndpointCounter = 0;
 function postsEndpoint(){
@@ -40,6 +45,7 @@ function postsEndpoint(){
   return 'https://jsonplaceholder.typicode.com/comments?postId='+postsEndpointCounter;
 }
 var imagesEndpoint = 'https://unsplash.it/800/800?image=';
+var toastHide = null;
 
 // Mode variables to help with state management.
 var POSTS_VIEW = 0;
@@ -82,10 +88,24 @@ document.addEventListener('DOMContentLoaded', function(event) {
   contentArea = document.getElementById('content-area');
   usersViewButton = document.getElementById('users-view-button');
   postsViewButton = document.getElementById('posts-view-button');
+  messageArea = document.getElementById('message-area');
+  connectionStatus = document.getElementById('connection-status');
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('service-worker.js')
-      .then(function() { console.log('Registered service worker!'); });
+      .then(function(registration) {
+        var worker = registration.installing;
+        worker.onstatechange = function(){
+          if (worker.state == 'activated'){
+            clearTimeout(toastHide);
+            ReactDOM.render(<ToastMessage message={'Ready for offline use'} />, messageArea);
+            toastHide = window.setTimeout( function() {
+              document.getElementById('toast-message').style.opacity = '0';
+              ReactDOM.unmountComponentAtNode(messageArea);
+            }, 2000);
+          }
+        }
+      });
   }
   usersViewButton.addEventListener('click', function(e){
     if (currentView == USERS_VIEW)
@@ -110,7 +130,43 @@ document.addEventListener('DOMContentLoaded', function(event) {
   window.addEventListener('resize', function(e) {
     if (getScrollPercent() >= 80 && currentView == POSTS_VIEW)   httpGetAsync(postsEndpoint(),getPosts);
   });
+  if (navigator.onLine)
+    ReactDOM.render(<SvgWifi />, connectionStatus);
+  else
+    ReactDOM.render(<SvgWifiOff />, connectionStatus);
+
+  window.addEventListener('load', function() {
+    function updateOnlineStatus(event) {
+      clearTimeout(toastHide);
+      if (navigator.onLine) {
+        var message = 'Online';
+        ReactDOM.render(<SvgWifi />, connectionStatus);
+      }
+      else {
+        var message = 'Offline';
+        ReactDOM.render(<SvgWifiOff />, connectionStatus);
+      }
+      ReactDOM.render(<ToastMessage message={message} />, messageArea);
+      toastHide = window.setTimeout( function() {
+        document.getElementById('toast-message').style.opacity = '0';
+        ReactDOM.unmountComponentAtNode(messageArea);
+      }, 2000);
+    }
+
+    window.addEventListener('online',  updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+  });
 });
+
+// Functional component for the Toast message.
+function ToastMessage(props){
+  if(props.message == 'Online')
+    return <span className="toast" id="toast-message" style={{opacity:1}}><SvgWifi />&nbsp;&nbsp;{props.message}&nbsp;</span>;
+  else if (props.message == 'Offline')
+    return <span className="toast" id="toast-message" style={{opacity:1}}><SvgWifiOff />&nbsp;&nbsp;{props.message}&nbsp;</span>;
+  else
+    return <span className="toast" id="toast-message" style={{opacity:1}}><SvgCheck />&nbsp;{props.message}&nbsp;</span>;
+}
 
 // Store the parsed results to the respective variable and render the users.
 function getUsers(data){
@@ -146,6 +202,21 @@ function SvgMapPin(props){
 // Functional component for the user icon.
 function SvgUser(props){
   return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#636363" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>;
+}
+
+// Functional component for the check icon.
+function SvgCheck(props){
+  return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1de9b6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{verticalAlign: 'top'}}><polyline points="20 6 9 17 4 12"></polyline></svg>;
+}
+
+// Functional component for the wifi icon.
+function SvgWifi(props){
+  return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1de9b6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" ><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12" y2="20"></line></svg>;
+}
+
+// Functional component for the wifi-off icon.
+function SvgWifiOff(props){
+  return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff1744" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" ><line x1="1" y1="1" x2="23" y2="23"></line><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path><path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12" y2="20"></line></svg>;
 }
 
 // Functional component for the user card.
