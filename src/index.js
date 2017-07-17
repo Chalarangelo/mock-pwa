@@ -90,6 +90,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
   postsViewButton = document.getElementById('posts-view-button');
   messageArea = document.getElementById('message-area');
   connectionStatus = document.getElementById('connection-status');
+  httpGetAsync(usersEndpoint,function(e){
+    getUsers(e);
+    httpGetAsync(postsEndpoint(),getPosts);
+  });
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('service-worker.js')
@@ -118,10 +122,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
       return;
     currentView = POSTS_VIEW;
     posts = [];
-    httpGetAsync(postsEndpoint(),getPosts);
-  });
-  httpGetAsync(usersEndpoint,function(e){
-    getUsers(e);
     httpGetAsync(postsEndpoint(),getPosts);
   });
   window.addEventListener('scroll', function(e) {
@@ -225,7 +225,7 @@ function UserCard(props){
   return <div className="card fluid col-sm-12" id={"user_"+user.login.username}>
     <div className="section row">
       <div className="col-sm-2 col-md-1">
-        <img src={user.picture.medium} alt={user.login.username} className="user-image" />
+        <img src={user.picture.medium} alt="" className="user-image" />
       </div>
       <div className="col-sm">
         <h4 className="user-name">{user.name.title} {user.name.first} {user.name.last}
@@ -249,7 +249,7 @@ function UserCard(props){
 function PostCard(props){
   return <div>
     <div className="card fluid" id={"post_"+nextPostId()}>
-      <img className="section media" src={props.image} alt="post image" style={randomColor()}/>
+      <img className="section media" src={props.image} alt="" style={randomColor()}/>
       <div className="section">
         <p className="post-text">{props.text+'.'}</p>
       </div>
