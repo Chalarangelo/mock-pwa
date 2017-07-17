@@ -34,7 +34,7 @@ var contentArea = null;
 var usersViewButton = null;
 var postsViewButton = null;
 var usersEndpoint = 'https://randomuser.me/api?seed=%22ph%27nglui%20mglw%27nafh%20Cthulhu%20R%27lyeh%20wgah%27nagl%20fhtagn%22&results=25&nat=US';
-var postsEndpointCounter = 1;
+var postsEndpointCounter = 0;
 function postsEndpoint(){
   postsEndpointCounter++;
   return 'https://jsonplaceholder.typicode.com/comments?postId='+postsEndpointCounter;
@@ -82,6 +82,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
   contentArea = document.getElementById('content-area');
   usersViewButton = document.getElementById('users-view-button');
   postsViewButton = document.getElementById('posts-view-button');
+  // if ('serviceWorker' in navigator) {
+  //   navigator.serviceWorker
+  //     .register(process.env.PUBLIC_URL +'service-worker.js')
+  //     .then(function() { console.log('Registered service worker!'); });
+  // }
   usersViewButton.addEventListener('click', function(e){
     if (currentView == USERS_VIEW)
       return;
